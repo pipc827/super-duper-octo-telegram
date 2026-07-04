@@ -1,3 +1,13 @@
+:root {
+    --primary: #00d9ff;
+    --accent: #ff006e;
+    --success: #00ff88;
+    --dark: #0a0e27;
+    --darker: #050811;
+    --text: #e0e6ff;
+    --border: #1a2558;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,79 +15,203 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--darker) 0%, #1a1a3e 100%);
+    color: var(--text);
+    overflow-x: hidden;
+    position: relative;
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.stars::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(2px 2px at 20% 30%, var(--primary), rgba(0, 217, 255, 0)),
+                      radial-gradient(2px 2px at 60% 70%, var(--accent), rgba(255, 0, 110, 0)),
+                      radial-gradient(1px 1px at 50% 50%, var(--success), rgba(0, 255, 136, 0));
+    background-size: 200% 200%;
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
 }
 
 .container {
-    background: white;
-    border-radius: 20px;
-    padding: 40px;
-    max-width: 800px;
-    width: 100%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
 }
 
-h1 {
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 60px;
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+    font-size: 1.8em;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-btn {
+    background: linear-gradient(90deg, var(--primary), #0099cc);
+    color: var(--dark);
+    padding: 8px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 217, 255, 0.3);
+}
+
+.hero {
     text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-    font-size: 2.5em;
+    margin-bottom: 80px;
+}
+
+.hero h1 {
+    font-size: 3.5em;
+    font-weight: 900;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientFlow 3s ease infinite;
+    letter-spacing: -2px;
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+}
+
+.hero p {
+    font-size: 1.1em;
+    color: rgba(224, 230, 255, 0.6);
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.badge {
+    display: inline-block;
+    background: rgba(0, 217, 255, 0.1);
+    border: 1px solid var(--primary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .upload-section {
-    margin-bottom: 40px;
+    margin-bottom: 60px;
+}
+
+.upload-card {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(255, 0, 110, 0.05));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 50px 40px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.upload-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.2);
+}
+
+.icon {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+.upload-card h2 {
+    font-size: 1.6em;
+    margin-bottom: 25px;
+    font-weight: 700;
 }
 
 .upload-box {
-    border: 3px dashed #667eea;
-    border-radius: 10px;
-    padding: 30px;
-    text-align: center;
+    border: 2px dashed var(--primary);
+    border-radius: 12px;
+    padding: 40px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #f8f9ff;
+    background: rgba(0, 217, 255, 0.05);
 }
 
 .upload-box:hover {
-    border-color: #764ba2;
-    background-color: #f0f2ff;
-    transform: scale(1.02);
+    background: rgba(0, 217, 255, 0.1);
+    border-color: var(--accent);
 }
 
 #jsonInput {
     display: none;
 }
 
-.upload-label {
+.upload-box label {
     cursor: pointer;
     display: block;
 }
 
-.upload-label span {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #667eea;
-    display: block;
-    margin-bottom: 10px;
+.upload-text {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 8px;
 }
 
-.upload-label small {
-    color: #999;
-    font-size: 0.9em;
-    display: block;
+.upload-box small {
+    color: rgba(224, 230, 255, 0.5);
+    font-size: 0.85em;
 }
 
 .error-message {
-    color: #e74c3c;
-    text-align: center;
-    margin-top: 10px;
-    font-weight: bold;
+    color: var(--accent);
+    margin-top: 15px;
+    font-weight: 600;
     display: none;
 }
 
@@ -85,98 +219,180 @@ h1 {
     display: block;
 }
 
+.wheel-section {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .wheel-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 40px 0;
+    margin-bottom: 50px;
 }
 
-#wheelCanvas {
-    max-width: 100%;
-    height: auto;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+.wheel-wrapper {
+    position: relative;
     margin-bottom: 30px;
 }
 
-.spin-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 15px 50px;
-    font-size: 1.3em;
-    font-weight: bold;
-    border-radius: 50px;
+.glow {
+    position: absolute;
+    inset: -50px;
+    background: radial-gradient(circle, rgba(0, 217, 255, 0.2) 0%, transparent 70%);
+    filter: blur(40px);
+    animation: pulse 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+#wheelCanvas {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 40px rgba(0, 217, 255, 0.3));
+    border-radius: 50%;
+}
+
+.spin-btn {
+    background: linear-gradient(90deg, var(--primary), #0099cc);
+    color: var(--dark);
+    border: 2px solid var(--primary);
+    padding: 14px 50px;
+    font-size: 1em;
+    font-weight: 900;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
 }
 
-.spin-button:hover:not(:disabled) {
-    transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.6);
+.spin-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
 }
 
-.spin-button:disabled {
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.spin-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0, 217, 255, 0.4);
+    border-color: var(--accent);
+}
+
+.spin-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-.result-section {
+.result-box {
     text-align: center;
-    margin-bottom: 30px;
+    margin-top: 40px;
 }
 
 .result {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    font-size: 1.3em;
-    font-weight: bold;
-    min-height: 60px;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(255, 0, 110, 0.15));
+    border: 1px solid var(--border);
+    color: var(--primary);
+    padding: 30px;
+    border-radius: 12px;
+    font-size: 1.4em;
+    font-weight: 700;
+    min-height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
+    backdrop-filter: blur(10px);
 }
 
-.links {
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 25px;
+}
+
+.stat {
+    font-size: 0.9em;
+    color: rgba(224, 230, 255, 0.7);
+}
+
+.stat span {
+    display: block;
+    font-size: 1.8em;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.footer {
     text-align: center;
-    padding-top: 20px;
-    border-top: 2px solid #f0f0f0;
+    padding-top: 40px;
+    margin-top: 60px;
+    border-top: 1px solid var(--border);
+    color: rgba(224, 230, 255, 0.4);
+    font-size: 0.85em;
 }
 
-.links a {
-    display: inline-block;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: transform 0.3s ease;
-}
-
-.links a:hover {
-    transform: translateY(-2px);
-}
-
-@media (max-width: 600px) {
-    .container {
-        padding: 20px;
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.2em;
     }
 
-    h1 {
+    .upload-card {
+        padding: 30px;
+    }
+
+    .upload-box {
+        padding: 25px;
+    }
+
+    .spin-btn {
+        padding: 12px 35px;
+        font-size: 0.9em;
+    }
+
+    .stats {
+        gap: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
         font-size: 1.8em;
     }
 
-    #wheelCanvas {
-        width: 100%;
-        height: auto;
+    .upload-card {
+        padding: 20px;
     }
 
-    .spin-button {
-        padding: 12px 40px;
+    .upload-box {
+        padding: 20px;
+    }
+
+    .result {
         font-size: 1.1em;
+        padding: 20px;
     }
 }

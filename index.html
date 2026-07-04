@@ -3,36 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spinning Wheel Generator</title>
+    <title>SPIN.AI - Decision Engine</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="stars"></div>
     <div class="container">
-        <h1>🎡 Spinning Wheel</h1>
-        
-        <div class="upload-section">
-            <div class="upload-box">
-                <input type="file" id="jsonInput" accept=".json" />
-                <label for="jsonInput" class="upload-label">
-                    <span>📤 Upload JSON</span>
-                    <small>["Person1", "Person2", "Person3"]</small>
-                </label>
+        <nav class="navbar">
+            <div class="nav-brand">🎡 SPIN.AI</div>
+            <div class="nav-links">
+                <a href="todo-index.html" class="nav-btn">→ Tasks</a>
             </div>
-            <div id="errorMessage" class="error-message"></div>
+        </nav>
+
+        <section class="hero">
+            <h1>The Future of Decisions</h1>
+            <p>Quantum-powered randomization engine</p>
+            <div class="badge">v2.0 — Production</div>
+        </section>
+
+        <div class="upload-section">
+            <div class="upload-card">
+                <div class="icon">📊</div>
+                <h2>Upload Data</h2>
+                <div class="upload-box">
+                    <input type="file" id="jsonInput" accept=".json" />
+                    <label for="jsonInput">
+                        <div class="upload-text">Drop or click to upload</div>
+                        <small>["Item1", "Item2", "Item3"]</small>
+                    </label>
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+            </div>
         </div>
 
-        <div class="wheel-container">
-            <canvas id="wheelCanvas" width="500" height="500"></canvas>
-            <button id="spinButton" class="spin-button" disabled>SPIN!</button>
+        <div id="wheelSection" class="wheel-section" style="display: none;">
+            <div class="wheel-container">
+                <div class="wheel-wrapper">
+                    <canvas id="wheelCanvas" width="500" height="500"></canvas>
+                    <div class="glow"></div>
+                </div>
+                <button id="spinButton" class="spin-btn">
+                    <span>SPIN</span>
+                </button>
+            </div>
+
+            <div class="result-box">
+                <div id="result" class="result">Ready...</div>
+                <div class="stats">
+                    <div class="stat"><span id="itemCount">0</span> Items</div>
+                    <div class="stat"><span id="spinCount">0</span> Spins</div>
+                </div>
+            </div>
         </div>
 
-        <div class="result-section">
-            <div id="result" class="result">Upload a JSON file and spin!</div>
-        </div>
-
-        <div class="links">
-            <a href="todo-index.html">📝 To-Do List</a>
-        </div>
+        <footer class="footer">
+            <p>© 2024 SPIN.AI</p>
+        </footer>
     </div>
 
     <script src="script.js"></script>
