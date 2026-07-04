@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinning Wheel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Spinning Wheel Generator</h1>
+        
+        <div class="upload-section">
+            <div class="upload-box">
+                <input type="file" id="jsonInput" accept=".json" />
+                <label for="jsonInput" class="upload-label">
+                    <span>📤 Click to upload JSON file</span>
+                    <small>Expected format: ["Person", "Person2", "Person1"]</small>
+                </label>
+            </div>
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+        <div class="wheel-container">
+            <canvas id="wheelCanvas" width="500" height="500"></canvas>
+            <button id="spinButton" class="spin-button" disabled>SPIN!</button>
+        </div>
+
+        <div class="result-section">
+            <div id="result" class="result">Upload a JSON file and spin the wheel!</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
