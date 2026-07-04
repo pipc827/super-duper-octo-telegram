@@ -3,36 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskFlow - Productivity Suite</title>
+    <title>To-Do List</title>
     <link rel="stylesheet" href="todo-style.css">
 </head>
 <body>
-    <div class="stars"></div>
     <div class="container">
-        <nav class="navbar">
-            <div class="nav-brand">✨ TASKFLOW</div>
-            <div class="nav-links">
-                <a href="index.html" class="nav-btn">← Back</a>
-            </div>
-        </nav>
-
-        <section class="hero">
-            <h1>Productivity Reimagined</h1>
-            <p>The minimal task manager for maximum efficiency</p>
-        </section>
-
         <div class="todo-wrapper">
+            <header>
+                <h1>📝 My To-Do List</h1>
+                <p class="subtitle">Stay organized</p>
+            </header>
+
             <div class="input-section">
                 <input 
                     type="text" 
                     id="todoInput" 
                     class="todo-input" 
-                    placeholder="What needs to be done? Start typing..."
+                    placeholder="Add a new task..."
                     autocomplete="off"
                 >
-                <button id="addBtn" class="add-btn">
-                    <span>→</span>
-                </button>
+                <button id="addBtn" class="add-btn">Add</button>
             </div>
 
             <div class="filter-section">
@@ -43,35 +33,34 @@
 
             <div class="stats-section">
                 <div class="stat">
-                    <span class="stat-number" id="totalCount">0</span>
+                    <span class="stat-value" id="totalCount">0</span>
                     <span class="stat-label">Total</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-number" id="activeCount">0</span>
+                    <span class="stat-value" id="activeCount">0</span>
                     <span class="stat-label">Active</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-number" id="completedCount">0</span>
-                    <span class="stat-label">Completed</span>
+                    <span class="stat-value" id="completedCount">0</span>
+                    <span class="stat-label">Done</span>
                 </div>
             </div>
 
             <ul id="todoList" class="todo-list"></ul>
 
             <div class="empty-state" id="emptyState">
-                <div class="empty-icon">📭</div>
-                <p>No tasks yet. Create one to get started.</p>
+                <p>✨ No tasks yet. Add one to get started!</p>
             </div>
 
             <div class="action-buttons">
                 <button id="clearCompletedBtn" class="clear-btn">Clear Done</button>
-                <button id="clearAllBtn" class="clear-all-btn">Nuclear Reset</button>
+                <button id="clearAllBtn" class="clear-all-btn">Clear All</button>
+            </div>
+
+            <div class="back-link">
+                <a href="index.html">← Back to Wheel</a>
             </div>
         </div>
-
-        <footer class="footer">
-            <p>TaskFlow — Built with precision and purpose</p>
-        </footer>
     </div>
 
     <script src="todo-script.js"></script>

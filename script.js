@@ -1,6 +1,5 @@
 let wheelData = [];
 let isSpinning = false;
-let spinCount = 0;
 
 const jsonInput = document.getElementById('jsonInput');
 const spinButton = document.getElementById('spinButton');
@@ -8,19 +7,17 @@ const wheelCanvas = document.getElementById('wheelCanvas');
 const resultDiv = document.getElementById('result');
 const errorMessage = document.getElementById('errorMessage');
 const uploadBox = document.querySelector('.upload-box');
-const wheelSection = document.getElementById('wheelSection');
 
 function resizeCanvas() {
     const rect = wheelCanvas.parentElement.getBoundingClientRect();
-    const size = Math.min(500, rect.width - 20);
-    wheelCanvas.width = size;
-    wheelCanvas.height = size;
+    wheelCanvas.width = Math.min(500, rect.width - 20);
+    wheelCanvas.height = wheelCanvas.width;
 }
 
 const colors = [
-    '#00d9ff', '#0099cc', '#ff006e', '#00ff88', '#ffaa00',
-    '#ff3366', '#00ccff', '#ff0099', '#66ff00', '#ff6600',
-    '#00ffcc', '#ff0033', '#00ff00', '#ffff00', '#ff00ff'
+    '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
+    '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B88B', '#85C1E2',
+    '#E8DAEF', '#D5F4E6', '#FADBD8', '#FCF3CF', '#D6EAF8'
 ];
 
 jsonInput.addEventListener('change', handleFileUpload);
@@ -48,12 +45,9 @@ function handleFileUpload(event) {
 
             showError('');
             spinButton.disabled = false;
-            resultDiv.textContent = '🚀 Ready to spin...';
-            wheelSection.style.display = 'block';
-            spinCount = 0;
+            resultDiv.textContent = 'Ready to spin!';
             resizeCanvas();
             drawWheel();
-            updateStats();
         } catch (error) {
             showError('Invalid JSON. Expected: ["Item1", "Item2", "Item3"]');
             spinButton.disabled = true;
@@ -93,43 +87,42 @@ function drawWheel(rotation = 0) {
         ctx.closePath();
         ctx.fillStyle = colors[index % colors.length];
         ctx.fill();
-        ctx.strokeStyle = '#0a0e27';
-        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 3;
         ctx.stroke();
 
         const textAngle = startAngle + sliceAngle / 2;
-        const textX = centerX + Math.cos(textAngle) * (radius * 0.65);
-        const textY = centerY + Math.sin(textAngle) * (radius * 0.65);
+        const textX = centerX + Math.cos(textAngle) * (radius * 0.6);
+        const textY = centerY + Math.sin(textAngle) * (radius * 0.6);
 
         ctx.save();
         ctx.translate(textX, textY);
         ctx.rotate(textAngle + Math.PI / 2);
 
-        ctx.fillStyle = '#0a0e27';
-        ctx.font = 'bold 13px Inter, sans-serif';
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-
-        ctx.shadowColor = 'rgba(0, 217, 255, 0.5)';
-        ctx.shadowBlur = 5;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowBlur = 3;
 
         ctx.fillText(item, 0, 0);
         ctx.restore();
     });
 
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
-    ctx.fillStyle = '#0a0e27';
+    ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+    ctx.fillStyle = '#fff';
     ctx.fill();
-    ctx.strokeStyle = '#00d9ff';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
     ctx.stroke();
 
-    ctx.fillStyle = '#ff006e';
+    ctx.fillStyle = '#FF6B6B';
     ctx.beginPath();
     ctx.moveTo(centerX, 10);
-    ctx.lineTo(centerX - 12, 35);
-    ctx.lineTo(centerX + 12, 35);
+    ctx.lineTo(centerX - 10, 30);
+    ctx.lineTo(centerX + 10, 30);
     ctx.closePath();
     ctx.fill();
 }
@@ -141,8 +134,6 @@ function spinWheel() {
 
     isSpinning = true;
     spinButton.disabled = true;
-    spinButton.classList.add('spinning');
-    spinCount++;
 
     const rotations = 5 + Math.random() * 3;
     const randomStop = Math.random() * (2 * Math.PI);
@@ -165,23 +156,16 @@ function spinWheel() {
         } else {
             isSpinning = false;
             spinButton.disabled = false;
-            spinButton.classList.remove('spinning');
 
             const winningIndex = Math.floor(
                 (wheelData.length - (randomStop / ((2 * Math.PI) / wheelData.length))) % wheelData.length
             );
             const winner = wheelData[winningIndex];
-            resultDiv.textContent = `🎉 ${winner} WINS 🎉`;
-            updateStats();
+            resultDiv.textContent = `🎉 ${winner} wins! 🎉`;
         }
     }
 
     animate();
-}
-
-function updateStats() {
-    document.getElementById('itemCount').textContent = wheelData.length;
-    document.getElementById('spinCount').textContent = spinCount;
 }
 
 window.addEventListener('resize', () => {
