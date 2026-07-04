@@ -1,5 +1,6 @@
 let wheelData = [];
 let isSpinning = false;
+let spinCount = 0;
 
 const jsonInput = document.getElementById('jsonInput');
 const spinButton = document.getElementById('spinButton');
@@ -7,22 +8,21 @@ const wheelCanvas = document.getElementById('wheelCanvas');
 const resultDiv = document.getElementById('result');
 const errorMessage = document.getElementById('errorMessage');
 const uploadBox = document.querySelector('.upload-box');
+const wheelSection = document.getElementById('wheelSection');
 
-// Set canvas size based on container
 function resizeCanvas() {
     const rect = wheelCanvas.parentElement.getBoundingClientRect();
-    wheelCanvas.width = Math.min(500, rect.width - 20);
-    wheelCanvas.height = wheelCanvas.width;
+    const size = Math.min(500, rect.width - 20);
+    wheelCanvas.width = size;
+    wheelCanvas.height = size;
 }
 
-// Color palette for wheel segments
 const colors = [
-    '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
-    '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B88B', '#85C1E2',
-    '#E8DAEF', '#D5F4E6', '#FADBD8', '#FCF3CF', '#D6EAF8'
+    '#00d9ff', '#0099cc', '#ff006e', '#00ff88', '#ffaa00',
+    '#ff3366', '#00ccff', '#ff0099', '#66ff00', '#ff6600',
+    '#00ffcc', '#ff0033', '#00ff00', '#ffff00', '#ff00ff'
 ];
 
-// Handle file upload
 jsonInput.addEventListener('change', handleFileUpload);
 uploadBox.addEventListener('click', () => jsonInput.click());
 
@@ -36,7 +36,6 @@ function handleFileUpload(event) {
             const content = e.target.result;
             wheelData = JSON.parse(content);
 
-            // Validate data format
             if (!Array.isArray(wheelData)) {
                 throw new Error('JSON must be an array');
             }
@@ -45,16 +44,18 @@ function handleFileUpload(event) {
                 throw new Error('Array cannot be empty');
             }
 
-            // Ensure all items are strings
             wheelData = wheelData.map(item => String(item));
 
             showError('');
             spinButton.disabled = false;
-            resultDiv.textContent = 'Ready to spin!';
+            resultDiv.textContent = '🚀 Ready to spin...';
+            wheelSection.style.display = 'block';
+            spinCount = 0;
             resizeCanvas();
             drawWheel();
+            updateStats();
         } catch (error) {
-            showError('Invalid JSON format. Expected: ["Person", "Person2", "Person1"]');
+            showError('Invalid JSON. Expected: ["Item1", "Item2", "Item3"]');
             spinButton.disabled = true;
             wheelData = [];
         }
@@ -82,64 +83,57 @@ function drawWheel(rotation = 0) {
 
     const sliceAngle = (2 * Math.PI) / wheelData.length;
 
-    // Draw segments
     wheelData.forEach((item, index) => {
         const startAngle = sliceAngle * index + rotation;
         const endAngle = startAngle + sliceAngle;
 
-        // Draw segment
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
         ctx.arc(centerX, centerY, radius, startAngle, endAngle);
         ctx.closePath();
         ctx.fillStyle = colors[index % colors.length];
         ctx.fill();
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#0a0e27';
+        ctx.lineWidth = 4;
         ctx.stroke();
 
-        // Draw text
         const textAngle = startAngle + sliceAngle / 2;
-        const textX = centerX + Math.cos(textAngle) * (radius * 0.6);
-        const textY = centerY + Math.sin(textAngle) * (radius * 0.6);
+        const textX = centerX + Math.cos(textAngle) * (radius * 0.65);
+        const textY = centerY + Math.sin(textAngle) * (radius * 0.65);
 
         ctx.save();
         ctx.translate(textX, textY);
         ctx.rotate(textAngle + Math.PI / 2);
 
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 14px Arial';
+        ctx.fillStyle = '#0a0e27';
+        ctx.font = 'bold 13px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        // Add text shadow for better readability
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-        ctx.shadowBlur = 3;
+        ctx.shadowColor = 'rgba(0, 217, 255, 0.5)';
+        ctx.shadowBlur = 5;
 
         ctx.fillText(item, 0, 0);
         ctx.restore();
     });
 
-    // Draw center circle
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
-    ctx.fillStyle = '#fff';
+    ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
+    ctx.fillStyle = '#0a0e27';
     ctx.fill();
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#00d9ff';
+    ctx.lineWidth = 3;
     ctx.stroke();
 
-    // Draw pointer at top
-    ctx.fillStyle = '#FF6B6B';
+    ctx.fillStyle = '#ff006e';
     ctx.beginPath();
     ctx.moveTo(centerX, 10);
-    ctx.lineTo(centerX - 10, 30);
-    ctx.lineTo(centerX + 10, 30);
+    ctx.lineTo(centerX - 12, 35);
+    ctx.lineTo(centerX + 12, 35);
     ctx.closePath();
     ctx.fill();
 }
 
-// Spin the wheel
 spinButton.addEventListener('click', spinWheel);
 
 function spinWheel() {
@@ -148,26 +142,23 @@ function spinWheel() {
     isSpinning = true;
     spinButton.disabled = true;
     spinButton.classList.add('spinning');
+    spinCount++;
 
-    // Random spins between 5-8 full rotations
     const rotations = 5 + Math.random() * 3;
     const randomStop = Math.random() * (2 * Math.PI);
     const totalRotation = rotations * 2 * Math.PI + randomStop;
 
-    const spinDuration = 4000; // 4 seconds
+    const spinDuration = 4000;
     const startTime = Date.now();
-    let lastRotation = 0;
 
     function animate() {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / spinDuration, 1);
 
-        // Easing function for smooth deceleration
         const easeProgress = 1 - Math.pow(1 - progress, 3);
         const currentRotation = totalRotation * easeProgress;
 
         drawWheel(currentRotation);
-        lastRotation = currentRotation;
 
         if (progress < 1) {
             requestAnimationFrame(animate);
@@ -176,19 +167,23 @@ function spinWheel() {
             spinButton.disabled = false;
             spinButton.classList.remove('spinning');
 
-            // Determine winner
             const winningIndex = Math.floor(
                 (wheelData.length - (randomStop / ((2 * Math.PI) / wheelData.length))) % wheelData.length
             );
             const winner = wheelData[winningIndex];
-            resultDiv.textContent = `🎉 ${winner} wins! 🎉`;
+            resultDiv.textContent = `🎉 ${winner} WINS 🎉`;
+            updateStats();
         }
     }
 
     animate();
 }
 
-// Handle window resize
+function updateStats() {
+    document.getElementById('itemCount').textContent = wheelData.length;
+    document.getElementById('spinCount').textContent = spinCount;
+}
+
 window.addEventListener('resize', () => {
     if (wheelData.length > 0) {
         resizeCanvas();
@@ -196,5 +191,4 @@ window.addEventListener('resize', () => {
     }
 });
 
-// Initial setup
 resizeCanvas();
